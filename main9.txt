@@ -1,0 +1,183 @@
+AIM: WAP to build a client-server model on different computers (half duplex / full duplex).
+Program:
+Server
+import java.io.*;
+import java.net.*;
+public class MyServer {
+public static void main(String[] args){
+try{
+ServerSocket ss=new ServerSocket(6666);
+Socket s=ss.accept();//establishes connection
+DataInputStream dis=new DataInputStream(s.getInputStream());
+String str=(String)dis.readUTF();
+System.out.println("message= "+str);
+ss.close();
+}catch(Exception e){System.out.println(e);}
+}
+}
+Client
+import java.io.*;
+import java.net.*;
+public class myclient {
+public static void main (String[] args) {
+try{
+Socket s=new Socket("192.168.211.157",6666);
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());
+dout.writeUTF("Hello Server");
+dout.flush();
+dout.close();
+s.close();
+}catch(Exception e){System.out.println(e);}
+}
+}
+
+
+Output:
+
+
+
+Server
+import java.io.*;
+import java.net.*;
+public class MyServer {
+public static void main(String[] args){
+try{
+ServerSocket ss=new ServerSocket(6666);
+Socket s=ss.accept();//establishes connection
+DataInputStream dis=new DataInputStream(s.getInputStream());
+String str=(String)dis.readUTF();
+System.out.println("message= "+str);
+ss.close();
+}catch(Exception e){System.out.println(e);}
+}
+}
+Client
+import java.io.*;
+import java.net.*;
+public class MyClient {
+public static void main (String[] args) {
+try{
+Socket s=new Socket("localhost",6666);
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());
+dout.writeUTF("Hello Server");
+dout.flush();
+dout.close();
+s.close();
+}catch(Exception e){System.out.println(e);}
+} 
+}
+Output:
+
+
+
+
+
+
+
+
+
+
+Half Duplex
+
+Server
+import java.io.*;
+import java.net.*;
+public class MyServer {
+public static void main(String[] args){
+try{
+ServerSocket ss=new ServerSocket(6666);
+Socket s=ss.accept();//establishes connection
+DataInputStream dis=new DataInputStream(s.getInputStream());
+String str=(String)dis.readUTF();
+System.out.println("message= "+str);
+ss.close();
+}catch(Exception e){System.out.println(e);}
+}
+}
+Client
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+public class MyClient {
+public static void main (String[] args) {
+try{
+Socket s=new Socket("192.168.211.159",6666);
+Scanner sc=new Scanner(System.in);
+String mess=sc.nextLine();
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());
+dout.writeUTF("Hello Server");
+dout.flush();
+dout.close();
+s.close();
+}catch(Exception e){System.out.println(e);}
+} 
+}
+
+Output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Full Duplex
+
+Server
+import java.net.*;  
+import java.io.*;  
+class MyServer1{  
+public static void main(String args[])throws Exception{  
+ServerSocket ss=new ServerSocket(3333);  
+Socket s=ss.accept();  
+DataInputStream din=new DataInputStream(s.getInputStream());  
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
+String str="",str2="";  
+while(!str.equals("stop")){  
+str=din.readUTF();  
+System.out.println("client says: "+str);  
+str2=br.readLine();  
+dout.writeUTF(str2);  
+dout.flush();  
+}  
+din.close();  
+s.close();  
+ss.close();  
+}
+}  
+Client
+import java.net.*; 
+import java.io.*;
+class MyClient{  
+public static void main(String args[])throws Exception{  
+Socket s=new Socket("localhost",3333);  
+DataInputStream din=new DataInputStream(s.getInputStream());  
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
+String str="",str2="";  
+while(!str.equals("stop")){  
+str=br.readLine();  
+dout.writeUTF(str);  
+dout.flush();  
+str2=din.readUTF();  
+System.out.println("Server says: "+str2);  
+}  
+dout.close();  
+s.close();  
+}
+}  
+
+Output:
+
